@@ -3,7 +3,7 @@ package br.com.tcp.servidor.app;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Processamento {
+public class Processamento{
 
     public String decode(String evento) {
 
@@ -31,8 +31,8 @@ public class Processamento {
                     String particao = matcher.group(5);
                     String zona = matcher.group(6);
 
-                    return "Formato >> " + formato + "\nConta >> " + conta + "\nQualificador >> "
-                            + qualificador + "\nEvento >> " + event + "\nPartição >> " + particao + "\nZona >> " + zona;
+                    return "Formato >> " + formato + "\nConta >> " + conta + "\nEvento >> "
+                            + qualificador + " " +  event + "\nPartição >> " + particao + "\nZona >> " + zona;
 
                 }
             }

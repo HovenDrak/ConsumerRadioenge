@@ -6,6 +6,8 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDateTime;
 import java.util.Date;
 
 public class Recebimento extends ChannelInboundHandlerAdapter {
@@ -43,15 +45,21 @@ public class Recebimento extends ChannelInboundHandlerAdapter {
         ctx.writeAndFlush(out);
     }
     private void mostrarMensagemRecebida(ChannelHandlerContext ctx, String ip, Processamento processo, String evento) {
-        if (evento.contains("500000 ")){
+        // 50000022566325563
+
+        if (evento.contains("500000 ")) {
             System.out.println(timeStamp() + "{" + ip + "} = Recebeu do Servidor -> " + processo.decode(evento.substring(7)));
             enviarAck(ctx);
-        } else if (evento.contains("5000 ")){
+        } else if (evento.contains("5000 ")) {
             System.out.println(timeStamp() + "{" + ip + "} = Recebeu do Cliente -> " + processo.decode(evento.substring(5)));
             enviarAck(ctx);
-        } else
+        } else if (evento.contains("1011 ")) {
             System.out.println(timeStamp() + "{" + ip + "} = Recebeu um Keep Alive -> " + evento);
-        enviarAck(ctx);
+            enviarAck(ctx);
+        } else {
+            System.out.println(timeStamp() + "{" + ip + "} = Evento sem formatação -> " + evento);
+            enviarAck(ctx);
+        }
     }
     private byte[] byteParaString(ByteBuf msg) {
         ByteBuf byteBuf = msg;
